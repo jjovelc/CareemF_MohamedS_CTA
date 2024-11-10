@@ -1,0 +1,2 @@
+# chicken_transcriptome_assemblies_sufna
+Transcriptome assembly pipeline
