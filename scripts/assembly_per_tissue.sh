@@ -3,10 +3,6 @@
 
 ### STEP #1: Assembly with rnaSPAdes
 
-#***********************************************#
-#********** CHECK OR CHANGE PARAMETER **********#
-#***********************************************#
-
 TISSUES=(Kidney Ovary Oviduct)
 DATA_DIRECTORY="/work/careem_lab/sufna/"
 
