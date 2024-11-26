@@ -1,2 +1,3 @@
-# chicken_transcriptome_assemblies_sufna
-Transcriptome assembly pipeline
+# Transcriptome assembly pipeline
+
+In this project
