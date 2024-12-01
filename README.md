@@ -1,6 +1,10 @@
 # Transcriptome assembly pipeline
 
-In this project
+## Rational
+
+In this project, libraries constructed for Saleh etal., 2025 () were used to conduct transcriptome assembly using the pipeline described below.
+
+The goal of this project is to pursue the discovery of novel transcripts not included in the reference Gallus gallus in the Ensembl database, which is the most common repository used for the analysis of RNAseq libraries. The rational behind our hypothesis is that no transcriptome include all transcripts encoded by the genome. Expression of many transcripts is not constitutive but rather facultative. Since these libraries come from an experiment of virus infection in chicken it is possible that some transcripts expressed in response to virus infection are not included in the reference transcriptome. Other genetic and environmental factors may also be the cause of expression of transcripts not seen previously.
 
 Once Trinotate has finished sucessfully:
 
@@ -16,3 +20,17 @@ NODE_10006_length_3531_cov_18.715877_g388_i3.p1	MED12_MOUSE
 NODE_10007_length_3531_cov_13.457167_g1246_i3.p1	SUCO_HUMAN
 NODE_1000_length_7867_cov_16.939781_g604_i0.p1	CYFP2_MOUSE
 NODE_10010_length_3530_cov_25.010854_g1052_i4.p1	ASND1_CHICK 
+
+2. Generate a list of protein to search annotations in Uniprot. Example:
+
+```bash
+	cut -f 2 ovary_node_and_protID.txt > proteins
+```
+
+3. Retrieve annotations. Example:
+
+```bash
+	python ../retrieve_protein_annotations_uniprot.py proteins > ovary_uniprot_ann.txt
+```
+
+
