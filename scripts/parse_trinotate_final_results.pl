@@ -104,11 +104,11 @@ sub read_fasta {
 }
 
 # Read both FASTA files
-my %nucleotide_seqs = read_fasta("$dir/transcripts.fasta.transdecoder.complete.cds");
-my %protein_seqs = read_fasta("$dir/transcripts.fasta.transdecoder.complete.pep");
+my %nucleotide_seqs = read_fasta("$dir/transcripts.fa.transdecoder_complete.cds");
+my %protein_seqs = read_fasta("$dir/transcripts.fa.transdecoder_complete.pep");
 
-open my $nt_out, ">", "$dir/transcripts.fasta.transdecoder.complete_with_annotation.fasta";
-open my $pro_out, ">", "$dir/transcripts.fasta.transdecoder.complete_with_annotation.faa";
+open my $nt_out, ">", "$dir/transcripts.fa.transdecoder_complete_with_annotation.fasta";
+open my $pro_out, ">", "$dir/transcripts.fa.transdecoder_complete_with_annotation.faa";
 
 
 # Print header of trinotate table

@@ -90,16 +90,9 @@ NODE_10001_length_3532_cov_21.596346_g5336_i1.p1	CP131_DANRE
 
 The above command will generate a report like this:
 
-R212B_HUMAN	protein:R212B_HUMAN gene_symbol:RNF212B description:E3 ubiquitin-protein ligase RNF212B
-CARL3_MOUSE	protein:CARL3_MOUSE gene_symbol:Carmil3 description:Capping protein, Arp2/3 and myosin-I linker protein 3
-CP131_DANRE	protein:CP131_DANRE gene_symbol:cep131 description:Centrosomal protein of 131 kDa
-CRBN_CHICK	protein:CRBN_CHICK gene_symbol:CRBN description:Protein cereblon
-DTX2_HUMAN	protein:DTX2_HUMAN gene_symbol:DTX2 description:Probable E3 ubiquitin-protein ligase DTX2
-ZNFX1_HUMAN	protein:ZNFX1_HUMAN gene_symbol:ZNFX1 description:NFX1-type zinc finger-containing protein 1
-MED12_MOUSE	protein:MED12_MOUSE gene_symbol:Med12 description:Mediator of RNA polymerase II transcription subunit 12
-SUCO_HUMAN	protein:SUCO_HUMAN gene_symbol:SUCO description:SUN domain-containing ossification factor
-CYFP2_MOUSE	protein:CYFP2_MOUSE gene_symbol:Cyfip2 description:Cytoplasmic FMR1-interacting protein 2
-ASND1_CHICK	protein:ASND1_CHICK gene_symbol:ASNSD1 description:Asparagine synthetase domain-containing protein 1
+R212B_HUMAN	protein:R212B_HUMAN gene_symbol:RNF212B description:E3 ubiquitin-protein ligase RNF212B<br>
+CARL3_MOUSE	protein:CARL3_MOUSE gene_symbol:Carmil3 description:Capping protein, Arp2/3 and myosin-I linker protein 3<br>
+CP131_DANRE	protein:CP131_DANRE gene_symbol:cep131 description:Centrosomal protein of 131 kDa<br>
 
 
 4. Remove records from summary of trinotate results (ggallus_transc_Trinotate_report.tsv) that do not include annotations.
@@ -107,3 +100,29 @@ ASND1_CHICK	protein:ASND1_CHICK gene_symbol:ASNSD1 description:Asparagine synthe
 ```bash
 	awk '$3 != "."' ggallus_transc_Trinotate_report.tsv > a && mv a ggallus_transc_Trinotate_report.tsv
 ```
+
+5. Finally run the master parsing script.
+
+```bash
+	for DIR in *trinotate
+	do
+		echo "Processing files in directory: $DIR"
+		perl parse_trinotate_final_results.pl $DIR ${DIR}/${DIR/_trinotate/}_uniprot_ann.txt  ${DIR}/ggallus_transc_Trinotate_report.tsv ${DIR}/${DIR/_trinotate/}_node_and_protID.txt
+	done
+```
+
+The above script will produce to main sets of results.
+
+A. A summary file containing gene annotation and gene ontology information (trinotate_report_table.tsv).
+
+B. Sequences (cds and pep) files with headers with annotations. Tipically will have the following names:
+
+transcripts.fa.transdecoder_complete_with_annotation.fasta
+transcripts.fa.transdecoder_complete_with_annotation.faa
+
+Here an example of annotated headers:
+
+>NODE_6585_length_4395_cov_18.587265_g3760_i0.p1 protein:DESI2_CHICK gene_symbol:DESI2 description:Deubiquitinase DESI2
+
+
+
