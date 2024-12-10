@@ -46,11 +46,11 @@ bwa mem $DMV_INDEX $MASS_FILE > $MASS_SAM
 
 # Extract non-aligned reads
 # For Control
-CONTROL_NOT_DMV="${CONTROL_FILE/_fa/_not-in-DMV.fa}"
+CONTROL_NOT_DMV="${CONTROL_FILE/.fa/_not-in-DMV.fa}"
 awk 'BEGIN {OFS = "\n"} /^@/ {next} $3 == "*" {print ">" $1, $10}' "$CONTROL_SAM" > "$CONTROL_NOT_DMV"
 
 # For Mass
-MASS_NOT_DMV="${MASS_FILE/_fa/_not-in-DMV.fa}"
+MASS_NOT_DMV="${MASS_FILE/.fa/_not-in-DMV.fa}"
 awk 'BEGIN {OFS = "\n"} /^@/ {next} $3 == "*" {print ">" $1, $10}' "$MASS_SAM" > "$MASS_NOT_DMV"
 
 # Index Mass non-aligned reads
@@ -58,7 +58,7 @@ MASS_NOT_DMV_INDEX="${TISSUE}_Mass_INDEX"
 bwa index -p $MASS_NOT_DMV_INDEX $MASS_NOT_DMV
 
 # Align Control non-aligned reads to Mass non-aligned reads
-ONLY_CONTROL="${CONTROL_FILE/_fa/_not-in-DMV-Mass.fa}"
+ONLY_CONTROL="${CONTROL_FILE/.fa/_not-in-DMV-Mass.fa}"
 bwa mem $MASS_NOT_DMV_INDEX $CONTROL_NOT_DMV > $ONLY_CONTROL
 
 # Combine all unique transcripts
