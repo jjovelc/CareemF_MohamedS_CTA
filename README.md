@@ -6,6 +6,13 @@ In this project, libraries constructed for Saleh etal., 2025 () were used to con
 
 The goal of this project is to pursue the discovery of novel transcripts not included in the reference Gallus gallus in the Ensembl database, which is the most common repository used for the analysis of RNAseq libraries. The rational behind our hypothesis is that no transcriptome include all transcripts encoded by the genome. Expression of many transcripts is not constitutive but rather facultative. Since these libraries come from an experiment of virus infection in chicken it is possible that some transcripts expressed in response to virus infection are not included in the reference transcriptome. Other genetic and environmental factors may also be the cause of expression of transcripts not seen previously.
 
+Several assemblies approaches were assayed. 
+
+1. Each treatment (Control, DMV or Mass), in each tissue (Kidney, Ovary, or Oviduct) were assembled separately. Nine assemblies in total.
+
+2. Samples per tissue (Kidney, Ovary or Oviduct) were pooled. Three assemblies in total.
+
+
 ## Description of pipeline
 
 ### Preprocessing and assembly
