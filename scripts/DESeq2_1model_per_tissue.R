@@ -148,7 +148,7 @@ renameColumns <- function(df){
   return(df)
 }
 
-#####
+
 makeVolcanoPlot <- function(df, vp_file, lfcthresh = 1, sigthresh = 0.05, 
                             width = 800, height = 600, 
                             point_size = 0.8, highlight_size = 1.1, node_size = 1.3,
@@ -168,7 +168,7 @@ makeVolcanoPlot <- function(df, vp_file, lfcthresh = 1, sigthresh = 0.05,
   df <- df[!is.na(df$padj) & !is.na(df$log2FoldChange), ]
   
   # Identify NODE_XXXX rows
-  df$node_label <- ifelse(grepl("NODE_", rownames(df)), rownames(df), NA)
+  df$is_node <- grepl("NODE_", rownames(df))
   
   # Calculate plot limits with padding
   max_lfc <- max(abs(df$log2FoldChange), na.rm = TRUE)
@@ -176,119 +176,70 @@ makeVolcanoPlot <- function(df, vp_file, lfcthresh = 1, sigthresh = 0.05,
   xlim <- c(-max_lfc * 1.1, max_lfc * 1.1)
   ylim <- c(0, max_pval * 1.1)
   
-  # Create the plot
-  png(vp_file, width = width, height = height, res = 120)
+  # Counts for legend
+  total_genes <- nrow(df)
+  nonsig_count <- sum(df$padj >= sigthresh, na.rm = TRUE)
+  lowfc_count <- sum(df$padj < sigthresh & abs(df$log2FoldChange) <= lfcthresh, na.rm = TRUE)
+  up_count <- sum(df$padj < sigthresh & df$log2FoldChange > lfcthresh, na.rm = TRUE)
+  down_count <- sum(df$padj < sigthresh & df$log2FoldChange < -lfcthresh, na.rm = TRUE)
+  novel_count <- sum(df$padj < sigthresh & df$is_node & abs(df$log2FoldChange) > lfcthresh, na.rm = TRUE)
   
-  # Set margins and text size
-  par(mar = c(5, 5, 4, 2) + 0.1, cex.lab = 1.2, cex.axis = 1)
+  # Open PNG device
+  png(vp_file, width = width, height = height, res = 120)
   
   # Base plot
   plot(df$log2FoldChange, -log10(df$padj), 
-       type = "n",  # Start with empty plot
-       main = "Volcano Plot",
+       type = "n", 
+       main = sprintf("Volcano Plot\n(Total genes: %d)", total_genes),
        xlab = expression("log"[2]*"(Fold Change)"),
        ylab = expression("-log"[10]*"(Adjusted P-value)"),
        xlim = xlim, ylim = ylim)
-  
-  # Add grid (optional)
   grid(lty = 2, col = "grey90")
+  abline(h = -log10(sigthresh), v = c(-lfcthresh, lfcthresh), lty = 2, col = "grey50")
   
-  # Add significance lines
-  abline(h = -log10(sigthresh), lty = 2, col = "grey50")
-  abline(v = c(-lfcthresh, lfcthresh), lty = 2, col = "grey50")
-  
-  # Plot points by category
   # Non-significant points
   nonsig <- df$padj >= sigthresh
-  points(df$log2FoldChange[nonsig], -log10(df$padj[nonsig]), 
+  points(df$log2FoldChange[nonsig], -log10(df$padj[nonsig]),
          pch = 21, bg = custom_colors$nonsig, col = 'black', cex = point_size)
   
-  # Significant but low fold change
+  # Significant but low FC
   lowfc <- df$padj < sigthresh & abs(df$log2FoldChange) <= lfcthresh
   points(df$log2FoldChange[lowfc], -log10(df$padj[lowfc]),
          pch = 21, bg = custom_colors$lowfc, col = 'black', cex = point_size)
   
-  # Significant upregulated and downregulated points
-  upleg <- df$padj < sigthresh & df$log2FoldChange > lfcthresh
-  points(df$log2FoldChange[upleg], -log10(df$padj[upleg]),
+  # Upregulated
+  up <- df$padj < sigthresh & df$log2FoldChange > lfcthresh
+  points(df$log2FoldChange[up], -log10(df$padj[up]),
          pch = 21, bg = custom_colors$upleg, col = 'black', cex = highlight_size)
   
-  downreg <- df$padj < sigthresh & df$log2FoldChange < -lfcthresh
-  points(df$log2FoldChange[downreg], -log10(df$padj[downreg]),
+  # Downregulated
+  down <- df$padj < sigthresh & df$log2FoldChange < -lfcthresh
+  points(df$log2FoldChange[down], -log10(df$padj[down]),
          pch = 21, bg = custom_colors$downreg, col = 'black', cex = highlight_size)
   
-  # Add NODE points (yellow for significant)
-  significant_nodes <- df$padj < sigthresh & !is.na(df$node_label) & abs(df$log2FoldChange) >= lfcthresh
-  if (sum(significant_nodes) > 0) {
-    points(df$log2FoldChange[significant_nodes], -log10(df$padj[significant_nodes]),
-           pch = 21, bg = custom_colors$nodes, col = 'black', cex = node_size)
-    
-  }
+  # Significant NODE points
+  significant_nodes <- df$padj < sigthresh & df$is_node & abs(df$log2FoldChange) > lfcthresh
+  points(df$log2FoldChange[significant_nodes], -log10(df$padj[significant_nodes]),
+         pch = 21, bg = custom_colors$nodes, col = 'black', cex = node_size)
   
-  # Add NODE points for non-significant (normal coloring)
-  nonsig_nodes <- df$padj >= sigthresh & !is.na(df$node_label)
-  if (sum(nonsig_nodes) > 0) {
-    points(df$log2FoldChange[nonsig_nodes], -log10(df$padj[nonsig_nodes]),
-           pch = 21, bg = custom_colors$nonsig, col = 'black', cex = point_size)
-  }
-  
-  # Add legend
-  legend("topright", legend = c("Non-significant", "Padj < 0.05; |FC| <= 2", 
-                                "Padj < 0.05; FC > 2", "Padj < 0.05; FC < -2", "Novel transcripts"),
-         pch = 21, pt.bg = c(custom_colors$nonsig, custom_colors$lowfc, 
-                             custom_colors$upleg, custom_colors$downreg, custom_colors$nodes), 
-         col = 'black', pt.cex = 1, bty = "n", cex = 1)
-  
-  # Close the graphics device
-  dev.off()
-}
-
-
-
-  
-  # Add counts to legend
+  # Legend
   legend_text <- c(
-    sprintf("Non-significant (%d)", sum(df$padj >= sigthresh, na.rm = TRUE)),
-    sprintf("Padj < %.2f; |FC| <= %.1f (%d)", 
-            sigthresh, 2^lfcthresh, 
-            sum(df$padj < sigthresh & abs(df$log2FoldChange) <= lfcthresh, na.rm = TRUE)),
-    sprintf("Padj < %.2f; FC > %.1f (%d)",
-            sigthresh, 2^lfcthresh,
-            sum(df$padj < sigthresh & df$log2FoldChange > lfcthresh, na.rm = TRUE)),
-    sprintf("Padj < %.2f; FC < -%.1f (%d)",
-            sigthresh, 2^lfcthresh,
-            sum(df$padj < sigthresh & df$log2FoldChange < -lfcthresh, na.rm = TRUE)),
-    if(nrow(node_df) > 0) sprintf("Novel transcripts (%d)", nrow(node_df))
+    sprintf("Non-significant (%d)", nonsig_count),
+    sprintf("Padj < %.2f; |FC| <= %.1f (%d)", sigthresh, 2^lfcthresh, lowfc_count),
+    sprintf("Padj < %.2f; FC > %.1f (%d)", sigthresh, 2^lfcthresh, up_count),
+    sprintf("Padj < %.2f; FC < -%.1f (%d)", sigthresh, 2^lfcthresh, down_count),
+    sprintf("Novel transcripts (%d)", novel_count)
   )
   
-  # Add legend
   legend("topright", 
-         legend = legend_text,
-         pch = 21, 
-         pt.bg = unlist(custom_colors)[1:length(legend_text)],
-         col = 'black',
-         pt.cex = 1,
-         bty = "n",
-         cex = 0.8)
+         legend = legend_text, 
+         pch = 21, pt.bg = unlist(custom_colors), 
+         col = 'black', pt.cex = 1, bty = "n", cex = 0.8)
   
-  # Add title with total gene count
-  title(main = sprintf("Volcano Plot\n(Total genes: %d)", nrow(df)), 
-        line = 1)
-  
+  # Close PNG device
   dev.off()
-  
-  # Return counts invisibly
-  invisible(list(
-    total = nrow(df),
-    nonsig = sum(df$padj >= sigthresh, na.rm = TRUE),
-    sig_lowfc = sum(df$padj < sigthresh & abs(df$log2FoldChange) <= lfcthresh, na.rm = TRUE),
-    sig_up = sum(df$padj < sigthresh & df$log2FoldChange > lfcthresh, na.rm = TRUE),
-    sig_down = sum(df$padj < sigthresh & df$log2FoldChange < -lfcthresh, na.rm = TRUE),
-    novel = nrow(node_df)
-  ))
 }
 
-#####
 
 
 
@@ -460,7 +411,8 @@ custom_filtered <- custom_annotations[
 # Combine BioMart and custom annotations
 final_annotations <- rbind(biomart_annotations, custom_filtered)
 
-#######################################################
+#################### ITERATE ALONG INFECTION-TIME POINT DATASETS ####################
+
 # Iterate and annotate results
 for (res_name in names(results_list)) {
   prefix <- gsub("res_", "", res_name)
