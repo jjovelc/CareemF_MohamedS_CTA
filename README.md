@@ -132,4 +132,4 @@ Here an example of annotated headers:
 >NODE_6585_length_4395_cov_18.587265_g3760_i0.p1 protein:DESI2_CHICK gene_symbol:DESI2 description:Deubiquitinase DESI2
 
 
-
+... to be continue
