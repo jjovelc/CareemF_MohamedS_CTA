@@ -17,7 +17,7 @@ Several assemblies approaches were assayed.
 
 ### Preprocessing and assembly
 
-1. Libraries were quality trimmed with fastq-mcf:
+1. Libraries were quality trimmed with fastq-mcf (ea-utils):
 
 ```bash
 	TRIMMING_THRESHOLD=35
