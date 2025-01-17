@@ -259,7 +259,7 @@ extract_norm_data <- function (dds, result, prefix, dir){
 setwd('/Users/juanjovel/OneDrive/jj/UofC/data_analysis/sufnaMohamed/assembly_ind_and_comb/kallisto_results/blast/DESeq2_analysis')
 
 # Get list of all _counts.tsv files in current directory
-count_files <- list.files(pattern = "ovary_counts.tsv$")
+count_files <- list.files(pattern = "oviduct_counts.tsv$")
 
 for(file in count_files){
   outdir      <- gsub("_counts.tsv", "", file)
