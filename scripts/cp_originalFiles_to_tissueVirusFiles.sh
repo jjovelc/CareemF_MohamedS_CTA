@@ -1,5 +1,6 @@
 #!/usr/bin/bash
- 
+
+# Copy libraries from original location in Mohamad folder 
 cp /work/careem_lab/Avian_smallRNAseq/mRNAs/Avian_mRNA_Seq/Li40814_R1.fq	Kidney_Mass_1_R1.fq
 cp /work/careem_lab/Avian_smallRNAseq/mRNAs/Avian_mRNA_Seq/Li40814_R2.fq	Kidney_Mass_1_R2.fq
 cp /work/careem_lab/Avian_smallRNAseq/mRNAs/Avian_mRNA_Seq/Li40815_R1.fq	Kidney_Mass_2_R1.fq
