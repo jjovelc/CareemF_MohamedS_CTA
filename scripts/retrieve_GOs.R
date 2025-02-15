@@ -1,3 +1,6 @@
+# This script will retrieve BioMart annotations
+
+
 # Load the biomaRt package
 library(biomaRt)
 
