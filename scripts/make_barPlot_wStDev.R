@@ -4,7 +4,7 @@ library(tidyr)
 library(dplyr)
 
 # Read the data
-data <- read.table("downregulated_DE_transc.tsv", header=TRUE, sep="\t")
+data <- read.table("<your-input-file-here>", header=TRUE, sep="\t")
 
 # Reshape data from wide to long format for grouped bars
 plot_data <- data %>%
