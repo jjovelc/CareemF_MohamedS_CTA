@@ -16,7 +16,7 @@ colnames(melted_data) <- c("Group", "Sample", "Value")
 p <- ggplot(melted_data, aes(x = Sample, y = Group, fill = Value)) +
   geom_tile(color = "black") +
   geom_text(aes(label = Value), size = 5) +
-  scale_fill_gradient(low = "white", high = "purple") +
+  scale_fill_gradient(low = "white", high = "yellow") +
   theme_minimal() +
   theme(
     axis.text.x = element_text(angle = 45, hjust = 1, size = 12),  # doubled size from default
