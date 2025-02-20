@@ -1,3 +1,4 @@
+# CHGI names and own names
 CHGI_id	sample_id
 Li40814	kidney_Mass_1
 Li40815	kidney_Mass_2
