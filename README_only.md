@@ -4,6 +4,7 @@
 
 - [Description of project](#description-of-project)
 - [Description de samples](#description-de-samples)
+- [Collaborators](#collaborators)
 - [Data analysis](#data-analysis)
   - [Taxonomic classification](#taxonomic-classification)
   - [Functional profiling](#functional-profiling)
@@ -30,7 +31,9 @@ __Table 1.__ Metadata of samples included in the project.
 |TA1E   |1      |  02_DSS    |
 
 
-| Sample Name | Group |
+### Collaborators
+
+| Collaborator | Email |
 |------|--------|
 | Alice | [@aliceGH](https://github.com/aliceGH) |
 | Bob   | [@bobGH](https://github.com/bobGH) |
