@@ -2,11 +2,11 @@
 
 ## Index
 
-[Description of project](#Description of project)
-  [Description de samples](#Description of samples)
-[Data analysis](#Data analysis)
-  [Taxonomic classification](#Taxonomic classification)
-  [Functional profiling](#Functional profiling)
+- [Description of project](#description-of-project)
+- [Description de samples](#description-de-samples)
+- [Data analysis](#data-analysis)
+  - [Taxonomic classification](#taxonomic-classification)
+  - [Functional profiling](#functional-profiling)
 
 ## Description of project
 
