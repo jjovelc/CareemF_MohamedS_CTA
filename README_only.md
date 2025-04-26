@@ -85,10 +85,3 @@ The HUMAnN3 algorithm was essentially run using the following code:
 The following figure illustrate statistically significant KEGG pathways that were differentially enriched during inflammation. ![Figure 2](images/functional.png).
 
 __Figure 2.__ MA plots depicting KEGG orthology differential abundance analysis results for control (left panel) or DSS-treated (right panel) animals.
-
-
-| Name | GitHub |
-|------|--------|
-| Alice | [@aliceGH](https://github.com/aliceGH) |
-| Bob   | [@bobGH](https://github.com/bobGH) |
- 
