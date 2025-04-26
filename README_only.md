@@ -1,4 +1,4 @@
-# Shotgun metagenomics changes associated with inflammation in the gut mice
+# Shotgun metagenomics changes associated with inflammation in the mice gut
 
 ## Index
 
